@@ -1,0 +1,54 @@
+{
+  "name": "ageguard-memory-gate-cases",
+  "version": "0.1",
+  "status": "draft",
+  "label_status": "draft_assistant",
+  "human_annotation": "not_started",
+  "reason_code_version": "0.1",
+  "rule_document": "memory-fields-and-write-rules-v0.1.md",
+  "annotation_rubric": "annotation-rubric-v0.1.md",
+  "case_count": 155,
+  "categories": {
+    "negation": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "correction": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "time_scope": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "wrong_person": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "sensitive": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "post_delete": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "cross_user": {
+      "total": 20,
+      "positive": 10,
+      "negative": 10
+    },
+    "control": {
+      "total": 15
+    }
+  },
+  "synthetic": true,
+  "real_user_data": false,
+  "model_results_included": false
+}
