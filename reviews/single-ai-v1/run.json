@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-04",
+  "review_type": "single_ai_nonblind_review",
+  "reviewer": "Codex (current conversation; precise model/decoding parameters not exposed)",
+  "base_commit": "2677eeb7afae10a52b535cb6c24da01b641d5c45",
+  "draft_seen": true,
+  "independent_annotation": false,
+  "human_gold": false,
+  "external_model_api_calls": 0,
+  "case_count": 155,
+  "workflow": "Reviewed existing draft with inputs and rubric in current conversation; serialized retained labels and explicit reviewer amendments. No independent per-case model calls or human double-labeling.",
+  "input_sha256": {
+    "annotation-rubric-v0.1.md": "47a0eaa2f4aabf05bead61c5fce27da733f90127aedee23b5c76fa66f2fd8430",
+    "cases/control.jsonl": "9486a5b7d7b10c0d0261c10285256703274d1ee38e49bea67528821d8c940c33",
+    "cases/correction.jsonl": "60e7d9aeb98628890c4067bfa9106c1be98666e2ca224c2c05d323b3daaa5642",
+    "cases/cross-user.jsonl": "15366be8f0a9191ac81846406a13f4b52b5a0c31efe5b2941554f8b076287de2",
+    "cases/negation.jsonl": "a1d51ab595a1e641d8f52f9075b3d265a439448f660826c3ca0c7362b856345d",
+    "cases/post-delete.jsonl": "94aa6bffeda3490d4379a8854a3e750721823078996f586abb1f32a652371454",
+    "cases/sensitive.jsonl": "921ac2b998df9a950a9605719f313f317e8de309e4b3af0d81fc06055072f62e",
+    "cases/time-scope.jsonl": "d58667a2e59ce9c14c3f635e95cf89b5e6f7329274e227716bdd566da8467cc4",
+    "cases/wrong-person.jsonl": "0a3c669ccc58ab704c939c75c415a6ce2dfabcaf5c181663f7e87ec3d23a0c09",
+    "manifest.json": "b2c9f43b82973181b39693da6a164a23367f9dd80a3b2122422ede119b522c8e",
+    "memory-fields-and-write-rules-v0.1.md": "65ac63bf06d8ce6be0a854f9830ec251a6bc15484e973576629e900c511e341e"
+  },
+  "annotation_sha256": "dd5fe85a77fe1dc071939834355b915a9968a6c4a71b3eeddf8811b180da2bf1",
+  "user_instruction": "就一个ai就行，就你啦，请直接完成到最终可以pr的版本再由我pr"
+}

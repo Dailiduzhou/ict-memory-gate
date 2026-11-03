@@ -1,6 +1,7 @@
 # 记忆门禁标注 rubric v0.1
 
 > 状态：**草案**。用于让不同标注者在同一批合成用例上独立给出可比较的判定；尚未完成真人双标与一致性报告。
+> 单AI复核见 [reviews/single-ai-v1](reviews/single-ai-v1/README.md)，与本文件的真人双标流程分开；原expected未替换。
 > 配套：[记忆字段与写入规则](memory-fields-and-write-rules-v0.1.md)｜[用例集说明](README.md)｜[合成用例](cases/)
 > 关键约束：标注者只看用例输入与 rubric，不看助手草案标签、模型输出、其他标注者结果或作者解释。
 
@@ -19,7 +20,7 @@
 
 1. **至少两名标注者**独立标注同一批用例；其中至少一名不是规则作者。没有第二人就只能叫“草案自检”，不能报告一致性。
 2. 标注者先读规则 v0.1 与本 rubric；不得先看 `expected` 字段、`notes`、模型输出或另一人的标注。
-3. 使用 `python3 validate.py --blind-out blind.jsonl` 生成盲标包。盲标包只保留 `case_id`、类别、来源、候选、旧记忆、删除状态、请求者与读取请求；`expected`、`notes`、`polarity` 一律不出现，且顺序按 `case_id` 哈希打散，所以编号相邻或靠前都不代表是正例。
+3. 建议使用 `python3 prepare_ai_annotation.py /tmp/ageguard-new-batch` 生成材料，仅分发annotator子目录。以下描述为旧工具行为，保留原编号存在泄漏，不能作为严格盲标包：`python3 validate.py --blind-out blind.jsonl`。盲标包只保留 `case_id`、类别、来源、候选、旧记忆、删除状态、请求者与读取请求；`expected`、`notes`、`polarity` 一律不出现，且顺序按 `case_id` 哈希打散，但原编号001—010/011—020仍与原标签相关，打乱顺序不能消除编号泄漏。
 4. 每名标注者输出一份 CSV／JSONL，至少包含：
    - `case_id`
    - `decision`：`APPROVE`／`REJECT`／`NEEDS_CLARIFICATION`／`DEFER`
