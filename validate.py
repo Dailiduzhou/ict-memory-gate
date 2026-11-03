@@ -11,8 +11,8 @@ Usage:
     python3 validate.py --score annotations.csv
 
 The blind pack drops `expected`, `notes` and `polarity` (polarity would give the
-answer away) and lists cases in a hash-shuffled order, because the case files
-put all positives before all negatives.
+answer away) and lists cases in a hash-shuffled order. Legacy IDs still reveal
+case groups; use prepare_ai_annotation.py for anonymized AI annotation packs.
 """
 from __future__ import annotations
 
@@ -474,10 +474,8 @@ BLIND_FORBIDDEN_KEYS = {"expected", "notes", "polarity", "label_status"}
 def blind_order(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Stable pseudo-random order for blind packs.
 
-    Case files list positives before negatives (001-010 positive, 011-020
-    negative), so emitting them in file order leaks the label through the
-    case_id. Ordering by a hash of case_id is deterministic across runs and
-    Python versions, and breaks that correlation.
+    This only hides row order. Original IDs remain label-correlated; use
+    prepare_ai_annotation.py when distributing materials to annotators.
     """
     return sorted(cases, key=lambda c: hashlib.sha256(c["case_id"].encode()).hexdigest())
 
@@ -531,19 +529,53 @@ FIELDS = ["decision", "operation", "primary_reason",
           "subject_ok", "time_ok", "sensitivity_action"]
 
 
-def score(path: Path, cases: list[dict[str, Any]]) -> None:
+def validate_annotation_rows(rows, cases, allow_partial=False):
+    known = {c["case_id"] for c in cases}
+    allowed = {"decision": DECISIONS, "operation": OPERATIONS,
+               "primary_reason": REASON_CODES,
+               "subject_ok": {"yes", "no", "unclear"},
+               "time_ok": {"yes", "no", "unclear"},
+               "sensitivity_action": {"allow", "private_limited", "clarify", "reject"}}
+    seen = set()
+    coverage = defaultdict(set)
+    for row in rows:
+        key = (row.get("annotator", "").strip(), row.get("case_id"))
+        if not key[0] or key[1] not in known:
+            raise SystemExit(f"blank annotator or unknown case_id: {key}")
+        if key in seen:
+            raise SystemExit(f"duplicate annotation: {key}")
+        seen.add(key)
+        coverage[key[0]].add(key[1])
+        for field, values in allowed.items():
+            if row.get(field) not in values:
+                raise SystemExit(f"invalid {field} for {key}: {row.get(field)!r}")
+        if row["decision"] != "APPROVE" and row["operation"] != "NOOP":
+            raise SystemExit(f"non-APPROVE requires NOOP: {key}")
+        if row["decision"] == "APPROVE" and row["primary_reason"] in NON_APPROVE_PRIMARY:
+            raise SystemExit(f"APPROVE with rejection reason: {key}")
+    if not allow_partial:
+        for name, ids in coverage.items():
+            if ids != known:
+                raise SystemExit(f"incomplete annotation for {name}: missing {len(known - ids)}; "
+                                 "use --allow-partial for an explicitly partial batch")
+    return coverage
+
+
+def score(path: Path, cases: list[dict[str, Any]], allow_partial=False) -> bool:
     expected = {c["case_id"]: c["expected"] for c in cases}
     categories = {c["case_id"]: c["category"] for c in cases}
-    rows: list[dict[str, str]] = []
     with path.open(encoding="utf-8", newline="") as handle:
         reader = csv.DictReader(handle)
         missing = [f for f in ["case_id", "annotator", *FIELDS] if f not in (reader.fieldnames or [])]
         if missing:
             raise SystemExit(f"annotation CSV missing columns: {missing}")
-        for row in reader:
-            if row.get("case_id") not in expected:
-                raise SystemExit(f"annotation CSV has unknown case_id {row.get('case_id')!r}")
-            rows.append(row)
+        rows = list(reader)
+    coverage = validate_annotation_rows(rows, cases, allow_partial)
+    all_ok = not allow_partial
+    if allow_partial:
+        print("PARTIAL batch: cannot satisfy full-set acceptance")
+    for name, ids in sorted(coverage.items()):
+        print(f"coverage/{name}: {len(ids)}/{len(cases)}")
 
     annotators = sorted({r["annotator"] for r in rows})
     if len(annotators) < 2:
@@ -563,10 +595,16 @@ def score(path: Path, cases: list[dict[str, Any]]) -> None:
                 av = [a[c][field] for c in common]
                 bv = [b[c][field] for c in common]
                 agree, kappa = cohen_kappa(av, bv)
-                flag = "OK" if agree >= 0.85 else "LOW"
+                flag = "REPORT"
+                if field in {"decision", "operation"}:
+                    flag = "OK" if agree >= 0.85 and kappa >= 0.70 else "LOW"
                 if field in {"subject_ok", "time_ok", "sensitivity_action"}:
                     flag = "OK" if agree >= 0.90 else "LOW"
+                if flag == "LOW":
+                    all_ok = False
                 print(f"  {field:20s} agree={agree:.3f} kappa={kappa:.3f} {flag}")
+            mismatches = [c for c in common if any(a[c][f] != b[c][f] for f in FIELDS)]
+            print("  disagreement case_ids:", ", ".join(mismatches) or "none")
             for category in CATEGORIES:
                 subset = [c for c in common if categories[c] == category]
                 if not subset:
@@ -574,6 +612,10 @@ def score(path: Path, cases: list[dict[str, Any]]) -> None:
                 av = [a[c]["decision"] for c in subset]
                 bv = [b[c]["decision"] for c in subset]
                 agree, _ = cohen_kappa(av, bv)
+                hard_ids = [c for c in subset if categories[c] in HARD_CATEGORIES or
+                            expected[c]["primary_reason"] in {"NEGATION_INVERTED", "DIAGNOSIS_INFERENCE"}]
+                if any(a[c]["decision"] != b[c]["decision"] for c in hard_ids):
+                    all_ok = False
                 hard = " HARD" if category in HARD_CATEGORIES else ""
                 print(f"  decision/{category}: n={len(subset)} agree={agree:.3f}{hard}")
 
@@ -586,12 +628,17 @@ def score(path: Path, cases: list[dict[str, Any]]) -> None:
             correct = sum(1 for r in subset if r[field] == expected[r["case_id"]][field])
             print(f"    {field:20s} {correct}/{len(subset)} = {correct / len(subset):.3f}")
 
+    print("agreement gates:", "PASS" if all_ok else "NOT PASSED")
+    print("Agreement is not accuracy or human-label provenance; CSV omits read-set checks.")
+    return all_ok
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--blind-out", type=Path, help="write a blind annotation pack")
     parser.add_argument("--sheet-out", type=Path, help="write a blank annotation CSV")
     parser.add_argument("--score", type=Path, help="score a two-annotator CSV")
+    parser.add_argument("--allow-partial", action="store_true", help="report partial coverage without accepting full-set gates")
     args = parser.parse_args()
 
     cases, errors = load_cases()
@@ -615,7 +662,7 @@ def main() -> int:
     if args.sheet_out:
         write_sheet(cases, args.sheet_out)
     if args.score:
-        score(args.score, cases)
+        return 0 if score(args.score, cases, args.allow_partial) else 1
     return 0
 
 

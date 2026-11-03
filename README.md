@@ -1,6 +1,8 @@
 # AgeGuard 记忆门禁 · 规则与合成用例集 v0.1
 
-> 状态：**规则草案＋合成用例草案＋标注 rubric**。
+> 状态：**规则草案＋合成用例草案＋标注 rubric＋单AI非盲复核建议**。
+
+新增：[155条AI复核结果与修改清单](reviews/single-ai-v1/README.md)｜[AI标注流程](AI-ANNOTATION.md)。运行 `python3 audit_ai_review.py` 检查结果；原始expected保留，未升级人工金标。
 
 ## 一、一句话
 
@@ -168,7 +170,7 @@ python3 validate.py \
   --sheet-out /tmp/memory-gate-sheet.csv
 ```
 
-盲标包移除 `expected`、`notes`、`polarity`，只保留 `case_id`、类别、来源、候选、旧记忆、删除状态、请求者与读取请求。`polarity` 必须移除：它直接写着“这条是正例／反例”，留着等于把答案发给标注者。同时盲标包按 `case_id` 哈希打散顺序——用例文件里每类前 10 条是正例、后 10 条是反例，按原顺序发放，看编号就能猜方向。`--sheet-out` 生成 155 行空白标注表，顺序与盲标包一致，每名标注者另存一份再填。标注者只看盲标包＋规则＋rubric。
+盲标包移除 `expected`、`notes`、`polarity`，只保留 `case_id`、类别、来源、候选、旧记忆、删除状态、请求者与读取请求。`polarity` 必须移除：它直接写着“这条是正例／反例”，留着等于把答案发给标注者。注意：原编号仍能关联正反例，以下旧工具不能提供严格盲标；正式分发请使用 `prepare_ai_annotation.py`，只共享其annotator子目录。旧盲标包按 `case_id` 哈希打散顺序——用例文件里每类前 10 条是正例、后 10 条是反例，按原顺序发放，看编号就能猜方向。`--sheet-out` 生成 155 行空白标注表，顺序与盲标包一致，每名标注者另存一份再填。标注者只看盲标包＋规则＋rubric。
 
 ### 8.3 双人标注与一致率
 
