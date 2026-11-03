@@ -19,7 +19,7 @@
 
 1. **至少两名标注者**独立标注同一批用例；其中至少一名不是规则作者。没有第二人就只能叫“草案自检”，不能报告一致性。
 2. 标注者先读规则 v0.1 与本 rubric；不得先看 `expected` 字段、`notes`、模型输出或另一人的标注。
-3. 使用 `python3 validate.py --blind-out blind.jsonl` 生成盲标包；盲标包只保留 `case_id`、来源、候选、旧记忆、删除状态、请求者与读取请求。
+3. 使用 `python3 validate.py --blind-out blind.jsonl` 生成盲标包。盲标包只保留 `case_id`、类别、来源、候选、旧记忆、删除状态、请求者与读取请求；`expected`、`notes`、`polarity` 一律不出现，且顺序按 `case_id` 哈希打散，所以编号相邻或靠前都不代表是正例。
 4. 每名标注者输出一份 CSV／JSONL，至少包含：
    - `case_id`
    - `decision`：`APPROVE`／`REJECT`／`NEEDS_CLARIFICATION`／`DEFER`
@@ -299,7 +299,7 @@
 
 ### 6.4 防“对答案”
 
-- 盲标包不含 `expected`、`notes`、`rubric` 标签。
+- 盲标包不含 `expected`、`notes`、`polarity`、`rubric` 标签；编号顺序已被打散，不得从编号推测正反例。
 - 标注者不得看模型输出、作者草稿或另一人的 CSV。
 - 第一轮独立完成后才能打开 `expected`；修改标签必须保留修改前版本与原因。
 - 如果 rubric 在标注中途修改，已标样本需要按新版本重标或标明版本，不能混用。

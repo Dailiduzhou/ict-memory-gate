@@ -9,11 +9,16 @@ Usage:
     python3 validate.py
     python3 validate.py --blind-out /tmp/memory-gate-blind.jsonl
     python3 validate.py --score annotations.csv
+
+The blind pack drops `expected`, `notes` and `polarity` (polarity would give the
+answer away) and lists cases in a hash-shuffled order, because the case files
+put all positives before all negatives.
 """
 from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import sys
 from collections import Counter, defaultdict
@@ -459,13 +464,30 @@ def print_stats(cases: list[dict[str, Any]]) -> None:
     print("label status: draft_assistant (not human-verified)")
 
 
+# Blind packs must not leak anything that reveals the intended label.
+# `polarity` says positive/negative/control outright; `expected`/`notes` are the
+# answer key. Anything added here needs the same test: could an annotator infer
+# the draft label from it without doing the judgment work?
+BLIND_FORBIDDEN_KEYS = {"expected", "notes", "polarity", "label_status"}
+
+
+def blind_order(cases: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Stable pseudo-random order for blind packs.
+
+    Case files list positives before negatives (001-010 positive, 011-020
+    negative), so emitting them in file order leaks the label through the
+    case_id. Ordering by a hash of case_id is deterministic across runs and
+    Python versions, and breaks that correlation.
+    """
+    return sorted(cases, key=lambda c: hashlib.sha256(c["case_id"].encode()).hexdigest())
+
+
 def write_blind(cases: list[dict[str, Any]], path: Path) -> None:
     with path.open("w", encoding="utf-8") as handle:
-        for case in cases:
+        for case in blind_order(cases):
             blind = {
                 "case_id": case["case_id"],
                 "category": case["category"],
-                "polarity": case["polarity"],
                 "event_type": case["event_type"],
                 "source": case.get("source"),
                 "candidate": case.get("candidate"),
@@ -474,8 +496,11 @@ def write_blind(cases: list[dict[str, Any]], path: Path) -> None:
                 "requester": case.get("requester"),
                 "read_request": case.get("read_request"),
             }
+            leaked = BLIND_FORBIDDEN_KEYS & set(blind)
+            if leaked:
+                raise SystemExit(f"blind pack would leak {sorted(leaked)}; refusing to write")
             handle.write(json.dumps(blind, ensure_ascii=False) + "\n")
-    print(f"blind pack written: {path} ({len(cases)} cases)")
+    print(f"blind pack written: {path} ({len(cases)} cases, polarity removed, order shuffled)")
 
 
 def write_sheet(cases: list[dict[str, Any]], path: Path) -> None:
@@ -485,9 +510,9 @@ def write_sheet(cases: list[dict[str, Any]], path: Path) -> None:
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns)
         writer.writeheader()
-        for case in cases:
+        for case in blind_order(cases):
             writer.writerow({"case_id": case["case_id"]})
-    print(f"blank annotation sheet written: {path} ({len(cases)} rows)")
+    print(f"blank annotation sheet written: {path} ({len(cases)} rows, same order as blind pack)")
 
 
 def cohen_kappa(a: list[str], b: list[str]) -> tuple[float, float]:
