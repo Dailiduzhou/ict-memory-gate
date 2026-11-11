@@ -1,0 +1,156 @@
+case_id,annotator,decision,operation,primary_reason,subject_ok,time_ok,sensitivity_action,note
+COR-015,assistant_draft,NEEDS_CLARIFICATION,NOOP,UNCERTAIN_CORRECTION,yes,unclear,allow,来源明确不确定，不能把候选作为已确定改口。
+COR-004,assistant_draft,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+TEN-015,assistant_draft,REJECT,NOOP,FORGED_OWNER,no,yes,allow,候选试图指定与来源不一致的 owner。
+SENS-011,assistant_draft,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+SENS-008,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感信息未明确提出保存范围或期限，先待本人确认；不等同于分享授权。
+DEL-002,assistant_draft,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,来源轮次独立且未命中被抑制的旧来源，可按新信息审查。
+CTRL-012,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+SENS-012,assistant_draft,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+TEN-020,assistant_draft,REJECT,NOOP,CROSS_TENANT_READ,yes,yes,allow,请求者与所声明的记忆归属人不同。
+SENS-002,assistant_draft,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,本人明确私人保存意图，候选保留自述并限于私人/有限期限。
+COR-006,assistant_draft,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+PERSON-005,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+TEN-012,assistant_draft,REJECT,NOOP,OWNER_MISMATCH,no,yes,allow,候选 subject_id 指向 elder_b，而来源与认证主体为 elder_a。
+SENS-014,assistant_draft,REJECT,NOOP,MEDICATION_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+CTRL-013,assistant_draft,NEEDS_CLARIFICATION,NOOP,UNCERTAINTY_NOT_RESOLVED,yes,unclear,allow,来源表达不确定，候选却写为确定事实。
+DEL-003,assistant_draft,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,来源轮次独立且未命中被抑制的旧来源，可按新信息审查。
+TIME-002,assistant_draft,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,候选保留本周区间及明确终点。
+COR-020,assistant_draft,NEEDS_CLARIFICATION,NOOP,UNCERTAIN_CORRECTION,yes,unclear,allow,来源明确不确定，不能把候选作为已确定改口。
+TEN-018,assistant_draft,REJECT,NOOP,CROSS_TENANT_READ,no,yes,allow,请求者 elder_b 试图读取归属 elder_a 的记忆。
+COR-016,assistant_draft,REJECT,NOOP,NOT_EXPLICIT_CORRECTION,yes,no,allow,一次性/当天表述被扩大为习惯或长期偏好。
+NEG-011,assistant_draft,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+DEL-009,assistant_draft,APPROVE,READ,OWNER_MATCH,yes,yes,allow,认证主体及请求范围允许本人读取。
+PERSON-015,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+NEG-020,assistant_draft,REJECT,NOOP,NEGATION_SCOPE_SHIFT,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+COR-013,assistant_draft,REJECT,NOOP,NOT_EXPLICIT_CORRECTION,yes,no,allow,一次性/当天表述被扩大为习惯或长期偏好。
+SENS-003,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感信息未明确提出保存范围或期限，先待本人确认；不等同于分享授权。
+CTRL-004,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+PERSON-017,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+SENS-020,assistant_draft,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+SENS-006,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感信息未明确提出保存范围或期限，先待本人确认；不等同于分享授权。
+NEG-015,assistant_draft,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+TIME-013,assistant_draft,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,短期或近期状态被扩展为长期状态。
+TEN-014,assistant_draft,REJECT,NOOP,FAMILY_WRITE_DENIED,no,yes,allow,家属请求者不能替老人写入其私人财务记忆。
+TEN-017,assistant_draft,REJECT,NOOP,CROSS_TENANT_READ,yes,yes,allow,请求者与所声明的记忆归属人不同。
+DEL-014,assistant_draft,REJECT,NOOP,DERIVED_CONTENT_RECOVERY,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+NEG-007,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,“从来没去过”在候选中保留为“从未去过”。
+TIME-001,assistant_draft,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,候选保留来源的当天／单次时间范围。
+COR-008,assistant_draft,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+PERSON-009,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+TIME-012,assistant_draft,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,短期或近期状态被扩展为长期状态。
+SENS-009,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感信息未明确提出保存范围或期限，先待本人确认；不等同于分享授权。
+TEN-010,assistant_draft,APPROVE,READ,OWNER_MATCH,yes,yes,allow,认证主体及请求范围允许本人读取。
+SENS-001,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感信息未明确提出保存范围或期限，先待本人确认；不等同于分享授权。
+COR-005,assistant_draft,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+NEG-009,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定限定为不喜欢女儿买太贵的东西，候选范围一致。
+TIME-017,assistant_draft,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,reject,“比去年好一些”被改成“一直很好”，丢失比较及时间范围。
+PERSON-020,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+CTRL-006,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+DEL-001,assistant_draft,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,来源轮次独立且未命中被抑制的旧来源，可按新信息审查。
+DEL-017,assistant_draft,REJECT,NOOP,DELETED_TARGET,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+TEN-001,assistant_draft,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,写入主体与来源 owner 一致；家庭绑定本身不改变私人归属。
+DEL-008,assistant_draft,APPROVE,ADD,EXPLICIT_REAUTHORIZATION,yes,yes,allow,新的来源明确要求重新记录，按新候选处理。
+SENS-017,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,reject,邻居胃痛被写成本人胃痛，主体错误且健康敏感。
+COR-017,assistant_draft,NEEDS_CLARIFICATION,NOOP,REPORTED_ABOUT_SELF_NEEDS_CONFIRMATION,unclear,yes,allow,关于本人的信息来自他人转述，需本人确认。
+DEL-010,assistant_draft,APPROVE,READ,OWNER_MATCH,yes,yes,allow,认证主体及请求范围允许本人读取。
+DEL-016,assistant_draft,REJECT,NOOP,DELETED_TARGET,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+SENS-004,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感健康内容未见明确保存确认及有限期限。
+DEL-011,assistant_draft,REJECT,NOOP,DELETED_SOURCE_REPLAY,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+DEL-012,assistant_draft,REJECT,NOOP,DELETED_SOURCE_REPLAY,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+DEL-013,assistant_draft,REJECT,NOOP,RESTORE_RESURRECTION,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+NEG-005,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+TIME-011,assistant_draft,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,短期或近期状态被扩展为长期状态。
+NEG-002,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+PERSON-013,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+DEL-007,assistant_draft,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,来源轮次独立且未命中被抑制的旧来源，可按新信息审查。
+TEN-009,assistant_draft,APPROVE,READ,OWNER_MATCH,yes,yes,allow,认证主体及请求范围允许本人读取。
+CTRL-014,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+NEG-001,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+SENS-016,assistant_draft,REJECT,NOOP,RISK_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+CTRL-011,assistant_draft,REJECT,NOOP,TRANSIENT_AS_PERMANENT,yes,no,allow,近期疲劳被候选改写成长期状态。
+PERSON-002,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+DEL-015,assistant_draft,REJECT,NOOP,DELETED_MEMORY_SHARE,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+TEN-016,assistant_draft,REJECT,NOOP,SESSION_OWNER_MISMATCH,no,yes,allow,来源 owner 与 session_owner_id 不一致。
+COR-018,assistant_draft,NEEDS_CLARIFICATION,NOOP,UNCERTAIN_CORRECTION,yes,unclear,allow,来源明确不确定，不能把候选作为已确定改口。
+DEL-006,assistant_draft,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,来源轮次独立且未命中被抑制的旧来源，可按新信息审查。
+NEG-016,assistant_draft,REJECT,NOOP,NEGATION_SCOPE_SHIFT,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+PERSON-004,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+TIME-019,assistant_draft,REJECT,NOOP,TIME_ANCHOR_WRONG,yes,no,allow,候选把去年起始错误改为从小。
+DEL-020,assistant_draft,REJECT,NOOP,CROSS_TENANT_READ,yes,yes,allow,请求者与所声明的记忆归属人不同。
+CTRL-005,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+TIME-003,assistant_draft,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,候选保留来源的当天／单次时间范围。
+SENS-018,assistant_draft,REJECT,NOOP,SHARE_WITHOUT_GRANT,yes,yes,reject,来源明确不告知孩子，候选却允许分享，且无独立授权。
+TIME-015,assistant_draft,REJECT,NOOP,PAST_AS_CURRENT,yes,no,allow,人生阶段过去经历被写成当前状态。
+TIME-018,assistant_draft,REJECT,NOOP,ONE_OFF_AS_RECURRING,yes,no,allow,一次未来活动被扩展为每周习惯。
+NEG-003,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+TIME-016,assistant_draft,REJECT,NOOP,MEMORY_AS_REMINDER,yes,no,allow,来源是习惯陈述，候选额外生成提醒副作用。
+TIME-005,assistant_draft,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,allow,候选保留来源中的过去时间锚点。
+CTRL-003,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+NEG-012,assistant_draft,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+TEN-008,assistant_draft,APPROVE,READ,OWNER_MATCH,yes,yes,allow,认证主体及请求范围允许本人读取。
+DEL-005,assistant_draft,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,来源轮次独立且未命中被抑制的旧来源，可按新信息审查。
+PERSON-010,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+TIME-007,assistant_draft,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,allow,候选保留来源中的过去时间锚点。
+NEG-017,assistant_draft,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+SENS-015,assistant_draft,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+NEG-010,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+TIME-020,assistant_draft,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,短期或近期状态被扩展为长期状态。
+CTRL-007,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+NEG-018,assistant_draft,REJECT,NOOP,NEGATION_STRENGTHENED,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+SENS-019,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感健康内容未见明确保存确认及有限期限。
+PERSON-008,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+TEN-007,assistant_draft,APPROVE,READ,OWNER_MATCH,yes,yes,allow,认证主体及请求范围允许本人读取。
+TIME-008,assistant_draft,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,候选保留来源的当天／单次时间范围。
+TEN-019,assistant_draft,REJECT,NOOP,FORGED_OWNER,no,yes,allow,请求体声称 owner elder_a，但认证请求者为 elder_b。
+TEN-004,assistant_draft,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,写入主体与来源 owner 一致；家庭绑定本身不改变私人归属。
+PERSON-003,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+PERSON-007,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+TIME-009,assistant_draft,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,allow,候选保留来源中的过去时间锚点。
+COR-001,assistant_draft,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+PERSON-001,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+PERSON-012,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+DEL-019,assistant_draft,REJECT,NOOP,DELETED_MEMORY_RECALL,yes,yes,allow,目标记忆状态为 DELETED，普通召回必须拒绝。
+COR-012,assistant_draft,NEEDS_CLARIFICATION,NOOP,ONE_OFF_AS_RECURRING,yes,no,allow,“这周六改周日”不能确定以后是否每周更改，需澄清。
+COR-003,assistant_draft,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+COR-010,assistant_draft,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+PERSON-016,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+TIME-010,assistant_draft,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,周期表达被保留，未推成额外提醒计划。
+TEN-011,assistant_draft,REJECT,NOOP,CROSS_TENANT_WRITE,no,yes,allow,来源 owner 与请求者不一致。
+CTRL-015,assistant_draft,APPROVE,NOOP,LOW_VALUE_TRANSIENT,yes,yes,allow,瞬时且无长期用途，按规则不新增记忆。
+COR-007,assistant_draft,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+TIME-004,assistant_draft,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,allow,候选保留来源中的过去时间锚点。
+TEN-013,assistant_draft,REJECT,NOOP,TARGET_OWNER_MISMATCH,no,yes,allow,修订目标不属于来源 owner。
+TIME-006,assistant_draft,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,周期表达被保留，未推成额外提醒计划。
+CTRL-001,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+DEL-004,assistant_draft,APPROVE,ADD,EXPLICIT_REAUTHORIZATION,yes,yes,allow,新的来源明确要求重新记录，按新候选处理。
+PERSON-014,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+PERSON-011,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+NEG-008,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+PERSON-019,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
+COR-014,assistant_draft,REJECT,NOOP,CONTEXT_AS_CORRECTION,yes,no,allow,一次请假不支持女儿离职/长期工作变化。
+COR-011,assistant_draft,REJECT,NOOP,NOT_EXPLICIT_CORRECTION,yes,no,allow,一次性/当天表述被扩大为习惯或长期偏好。
+NEG-006,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+TEN-006,assistant_draft,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,写入主体与来源 owner 一致；家庭绑定本身不改变私人归属。
+SENS-005,assistant_draft,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,本人明确私人保存意图，候选保留自述并限于私人/有限期限。
+CTRL-008,assistant_draft,APPROVE,NOOP,DUPLICATE_NOOP,yes,yes,allow,与现有 ACTIVE 记忆完全重复，只追加证据不新增。
+DEL-018,assistant_draft,REJECT,NOOP,DELETED_SOURCE_REPLAY,yes,yes,allow,命中删除抑制；旧内容或旧目标不得复生。
+NEG-004,assistant_draft,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,否定、范围／例外与来源一致。
+COR-019,assistant_draft,REJECT,NOOP,CONTEXT_AS_CORRECTION,yes,no,allow,临时缺货不表示偏好改回。
+CTRL-002,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,普通生活背景/偏好有来源支持，未触发拒绝边界。
+CTRL-010,assistant_draft,APPROVE,NOOP,NO_MEMORY_INTENT,yes,yes,allow,纯闲聊未表达长期记忆意图。
+TEN-005,assistant_draft,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,写入主体与来源 owner 一致；家庭绑定本身不改变私人归属。
+NEG-019,assistant_draft,REJECT,NOOP,NEGATION_SCOPE_SHIFT,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+COR-002,assistant_draft,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+SENS-013,assistant_draft,REJECT,NOOP,MEDICATION_INFERENCE,yes,yes,reject,候选加入来源未支持的诊断、用药或风险结论。
+PERSON-006,assistant_draft,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,候选主体保留为来源所述的关系人物。
+NEG-014,assistant_draft,REJECT,NOOP,NEGATION_STRENGTHENED,yes,yes,allow,候选丢失、反转或扩大了来源中的否定／例外范围。
+COR-009,assistant_draft,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,来源明确更正或改变，修订目标与版本匹配。
+NEG-013,assistant_draft,REJECT,NOOP,QUOTED_OTHER_AS_SELF,no,yes,allow,来源说的是女儿不吃辣，候选误归为本人。
+TIME-014,assistant_draft,REJECT,NOOP,ONE_OFF_AS_HABIT,yes,no,allow,单次事件被写成反复习惯。
+CTRL-009,assistant_draft,APPROVE,NOOP,DUPLICATE_NOOP,yes,yes,allow,与现有记忆语义等价，属于重复，不新增。
+TEN-002,assistant_draft,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,写入主体与来源 owner 一致；家庭绑定本身不改变私人归属。
+SENS-010,assistant_draft,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,本人明确私人保存意图，候选保留自述并限于私人/有限期限。
+SENS-007,assistant_draft,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,yes,clarify,敏感健康内容未见明确保存确认及有限期限。
+TEN-003,assistant_draft,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,写入主体与来源 owner 一致；家庭绑定本身不改变私人归属。
+PERSON-018,assistant_draft,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,来源指向家属／邻居／医生，候选却归为本人。
