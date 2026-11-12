@@ -1,9 +1,7 @@
 # 人工标注与一致性记录 v0.1
 
-> 状态：**双标已完成、未裁决**。A／B 两人各独立盲标 155 条（2026-11-12），一致率已算完，分歧逐条记录于第四节，**尚无第三人裁决**。
-> 六个字段的一致率均达到 v0.1 暂定门槛，但**硬约束子集未达 100% 一致（cross_user 1 条分歧）**，按本文件与 rubric §6.2 的规定：**暂停进入模型评分**，先做裁决。
-> 在完成裁决前，不得把 `expected` 写成“人工金标”，也不得对外报告“一致性已达标”。
-> 本文件只记录真人独立标注与一致率结果，不替代规则、rubric 或用例本身。
+> 状态：**双标、裁决、金标升级均已完成（2026-11-12）**。A／B 两人各独立盲标 155 条，六字段一致率均达标，硬约束子集 1 条分歧（TEN-015）＋多条草案离群已由**邱振豪＋杨冰冰三遍裁决**（pass 1 独立 → pass 2 对齐 → pass 3 对草案）闭合：54 条争议行 UNRESOLVED=0、P0 三条硬约束闭合；**37 条用例 `expected` 已按共识修订并升为 v0.2 人工金标**（修订清单见第六节），裁决后复评六字段及硬约束 decision 均 100% 一致（见 §四末表）。
+> 复评方式：不回改 A／B 原始 CSV；另存裁决后标签副本 `adjudication/adjudicated-labels-v0.2.csv`（A′／B′ 以共识覆盖 54 条争议行）重跑 `validate.py --score`。
 
 ## 一、批次信息
 
@@ -137,4 +135,58 @@
 - [ ] 复评方式：裁决后重跑 `python3 validate.py --score`（保留首轮原始 CSV，不覆盖），并把复核结果追加到 3.1 与第四节，标明 rubric 版本 v0.1.1。
 
 > 结论写法要求：只写本批次、本 rubric、本样本范围内的结果；不写“人工标注永远可靠”“门禁已通过生产验证”。
-> 本批次口径：**155 条合成用例、A／B 两人、2026-11-12 一轮盲标、rubric v0.1 标注／v0.1.1 修订、未裁决、未过模型评分前置条件。**
+
+## 六、裁决执行记录（2026-11-12，rubric v0.1.1 口径）
+
+> 裁决人：**邱振豪（规则作者）＋杨冰冰（标注者 A）**；季星辰（B）不参与。流程：pass 1 两人独立盲裁（不看 A/B 判定与草案）→ pass 2 对齐 → pass 3 打开 `draft-reference.csv` 对草案。全程记录见 `adjudication/adjudication-sheet.csv`（54 行，含每行 basis 与 change_*）。
+
+### 6.1 三遍完成情况
+
+- pass 1：两份独立表（`pass1-sheet-qiu-zhenhao.csv` / `pass1-sheet-yang-bingbing.csv`）54 行 `adj_*` 全非空、`pass1_done=YES`；
+- pass 2：40 行两人完全一致直接对齐；14 行分歧经讨论裁定（取值逐条记录于 sheet `basis`），**UNRESOLVED=0**；
+- **P0 硬约束三条闭合**：TEN-015 `REJECT/NOOP/MODEL_SET_OWNER`、TEN-016 `REJECT/NOOP/SESSION_OWNER_MISMATCH`、TIME-016 `REJECT/NOOP/MEMORY_AS_REMINDER`（三者均 `subject_ok=yes / time_ok=yes / sensitivity_action=allow`）。
+
+### 6.2 14 条讨论裁定（邱 vs 杨 → 定论）
+
+| # | 用例 | 分歧字段 | 裁定 |
+|---|---|---|---|
+| 1 | CTRL-011 | sensitivity_action | private_limited（REJECT 行健康类正交处理） |
+| 2 | TIME-020 | sensitivity_action | private_limited（同上） |
+| 3 | SENS-012 | decision／primary_reason／sensitivity_action | NEEDS_CLARIFICATION／REPORTED_ABOUT_SELF_NEEDS_CONFIRMATION／clarify（AI 话语按转述本人处理，已标 reported_other 不硬拒） |
+| 4 | CTRL-013 | primary_reason | UNCERTAIN_CORRECTION（记 G6 词表缺口） |
+| 5 | COR-017 | decision／primary_reason | REJECT／QUOTED_OTHER_AS_SELF |
+| 6 | DEL-015 | time_ok／sensitivity_action | no／reject |
+| 7 | COR-018 | decision／primary_reason | REJECT／QUOTED_OTHER_AS_SELF |
+| 8 | SENS-019 | sensitivity_action | private_limited |
+| 9 | NEG-014 | primary_reason | NEGATION_LOST |
+| 10 | TEN-012 | primary_reason | CROSS_TENANT_WRITE |
+| 11 | TIME-013 | primary_reason／sensitivity_action | TRANSIENT_AS_PERMANENT／clarify |
+| 12 | TIME-017 | sensitivity_action | clarify |
+| 13 | TEN-004 | primary_reason | NEW_SOURCE_AFTER_DELETE |
+| 14 | TEN-002 | primary_reason | SENSITIVE_LIMITED_RETENTION |
+
+### 6.3 对草案（pass 3）与金标升级
+
+- 共识与草案一致 17 行（`change_expected=NO`）；**偏离草案 37 行**，逐字段变更已写入 `cases/*.jsonl` 并升 v0.2：
+  - control：CTRL-001、CTRL-011、CTRL-012、CTRL-013
+  - correction：COR-011、COR-012、COR-013、COR-014、COR-017、COR-018
+  - cross_user：TEN-002、TEN-004、TEN-011、TEN-012、TEN-013、TEN-014、TEN-015、TEN-016、TEN-017、TEN-019、TEN-020
+  - negation：NEG-003、NEG-011、NEG-014、NEG-016、NEG-019
+  - post_delete：DEL-015、DEL-020
+  - sensitive：SENS-001、SENS-012、SENS-019
+  - time_scope：TIME-013、TIME-017、TIME-020
+  - wrong_person：PERSON-014、PERSON-016、PERSON-017、PERSON-019
+- `manifest.json` 已升 `version=0.2`、`label_status=gold_manual_v0.2`、`human_annotation=dual_annotated_adjudicated`；**A／B 原始 CSV 未回改**。
+- `change_rubric` 建议（23 行，落点两处）：① §3.2 敏感正交增补（REJECT 行涉健康且 private → private_limited；敏感无期限缺本人确认 → clarify）；② 主理由选择规则顺序（通过型事件码优先于类别通过码；G1/G3/G4 同门码序；G6 非改期“来源不确定”沿 UNCERTAIN_CORRECTION 并记词表缺口；SENS-012 型 AI 转述条款）。需两人确认后出 rubric v0.1.2 落稿，尚未定稿。
+- `change_case`：仅 TEN-016（建议给 `session_owner_id` 加注释或补同型对照，不改判定语义），待落实。
+
+### 6.4 裁决后复评（validate.py --score adjudication/adjudicated-labels-v0.2.csv）
+
+| 检查 | 结果 |
+|---|---|
+| A′ vs B′ 六字段一致率/κ | decision/operation/primary_reason/subject_ok/time_ok/sensitivity_action 全部 **1.000 / 1.000** |
+| 硬约束 decision（wrong_person / post_delete / cross_user）| **100%（各 20/20）** |
+| 裁决后标签 vs v0.2 金标 | 两份各 155 行，六字段全部 **155/155 = 1.000** |
+| 模型评分前置条件（rubric §6.2） | **已解除**：硬约束闭合、字段口径按 v0.1.1 复核完成、裁决依据已记录 |
+
+> 本批次口径更新：155 条合成用例、A／B 一轮盲标＋三遍裁决（邱振豪＋杨冰冰）、rubric v0.1 标注／v0.1.1 口径裁决、金标 v0.2、复评 100%。下一步为 A／B／C 三方案模型对照（待账号与预算）。

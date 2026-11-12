@@ -1,9 +1,9 @@
 {
   "name": "ageguard-memory-gate-cases",
-  "version": "0.1",
-  "status": "draft",
-  "label_status": "draft_assistant",
-  "human_annotation": "dual_annotated_pending_adjudication",
+  "version": "0.2",
+  "status": "gold",
+  "label_status": "gold_manual_v0.2",
+  "human_annotation": "dual_annotated_adjudicated",
   "reason_code_version": "0.1",
   "rule_document": "memory-fields-and-write-rules-v0.1.md",
   "annotation_rubric": "annotation-rubric-v0.1.md",
@@ -50,5 +50,14 @@
   },
   "synthetic": true,
   "real_user_data": false,
-  "model_results_included": false
+  "model_results_included": false,
+  "adjudication": {
+    "adjudicators": [
+      "邱振豪",
+      "杨冰冰"
+    ],
+    "date": "2026-11-12",
+    "changed_case_count": 37,
+    "sheet": "adjudication/adjudication-sheet.csv"
+  }
 }

@@ -461,7 +461,13 @@ def print_stats(cases: list[dict[str, Any]]) -> None:
     print("expected decisions:", dict(sorted(decisions.items())))
     reasons = Counter(c["expected"]["primary_reason"] for c in cases)
     print(f"distinct primary reasons: {len(reasons)}")
-    print("label status: draft_assistant (not human-verified)")
+    try:
+        with (ROOT / "manifest.json").open(encoding="utf-8") as handle:
+            manifest = json.load(handle)
+        status = manifest.get("label_status", "unknown")
+    except (OSError, json.JSONDecodeError):
+        status = "unknown"
+    print(f"label status: {status} ({'human-verified' if status.startswith('gold') else 'not human-verified'})")
 
 
 # Blind packs must not leak anything that reveals the intended label.
