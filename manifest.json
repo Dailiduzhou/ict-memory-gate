@@ -3,7 +3,7 @@
   "version": "0.1",
   "status": "draft",
   "label_status": "draft_assistant",
-  "human_annotation": "not_started",
+  "human_annotation": "dual_annotated_pending_adjudication",
   "reason_code_version": "0.1",
   "rule_document": "memory-fields-and-write-rules-v0.1.md",
   "annotation_rubric": "annotation-rubric-v0.1.md",
