@@ -1,0 +1,156 @@
+,case_id,annotator,decision,operation,primary_reason,subject_ok,time_ok,sensitivity_action,note
+0,COR-015,季星辰,NEEDS_CLARIFICATION,NOOP,UNCERTAIN_CORRECTION,yes,yes,allow,source.text「好像也行？…没太看清」；existing v1 未被明确否定 → G6 来源不确定，不能替用户裁决
+1,COR-004,季星辰,APPROVE,REVISE,CHANGE_OVER_TIME,yes,yes,allow,source.text「以前爱吃甜的，现在…」；claim 保留过去与现在分段，existing v1 → G6 时间对比改口
+2,TEN-015,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,source.owner=speaker=subject=requester=elder_a；scope=private 不涉他人 → G1 一致
+3,SENS-011,季星辰,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,source.text「血糖有点高」→ claim「患糖尿病」超出原话 → G4 诊断推断
+4,SENS-008,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「睡得少，别让孩子担心」；scope=private，valid_to=2026-11-09 有限期 → G7 私人有限期健康自述
+5,DEL-002,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-DEL-NEW-002 不在 suppressed[T-DEL-OLD-002]，claim 非旧文本 → G2 新独立来源
+6,CTRL-012,季星辰,APPROVE,ADD,PRIVATE_ONLY,yes,yes,allow,source.text「记着就行，不要告诉女儿」；scope=private 无分享授权，valid 至 11-01 → G7 不分享≠不记
+7,SENS-012,季星辰,REJECT,NOOP,ASSISTANT_FACT_NOT_SOURCE,no,yes,reject,source.speaker_id=assistant「她已经康复了」→ G3/G4 AI 话语不能成本人健康事实
+8,TEN-020,季星辰,REJECT,NOOP,FAMILY_PRIVATE_READ_DENIED,yes,yes,reject,read_request.scope=private_memory，requester=family_lin，grant_revoked=true → G1 家属读私人记忆且授权已撤销
+9,SENS-002,季星辰,APPROVE,ADD,SENSITIVE_PRIVATE_ALLOWED,yes,yes,private_limited,source.text「可以记着，只留在我这里」；scope=private，valid_to=2026-11-07 → G7 本人明确要求私人有限期
+10,COR-006,季星辰,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,source.text「不是六点，是六点半，我说错了」；existing v1 目标版本匹配 → G6 明确更正
+11,PERSON-005,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「小林说她周末回来」；subj=family_member/daughter_lin，reported_other，valid 10-25→10-26 有界 → G3 绑定女儿
+12,TEN-012,季星辰,REJECT,NOOP,OWNER_MISMATCH,no,yes,allow,source.owner=speaker=requester=elder_a，candidate.subject_id=elder_b → G1 候选主体与来源 owner 不一致
+13,SENS-014,季星辰,REJECT,NOOP,MEDICATION_INFERENCE,yes,no,reject,source.text「我今天忘吃药了」→ claim「经常漏服，需要补服」→ G4 用药推断；一次写成经常
+14,CTRL-013,季星辰,NEEDS_CLARIFICATION,NOOP,UNCERTAINTY_NOT_RESOLVED,yes,yes,allow,source.text「好像…记不太清」，candidate 断言 self_report「钥匙在抽屉里」→ G6 来源不确定，不能替用户裁决
+15,DEL-003,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-DEL-NEW-003 不在 suppressed[T-DEL-OLD-003]，新无关偏好 → G2 新独立来源正常写入
+16,TIME-002,季星辰,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,source.text「这周…周日回自己家」；valid 10-20→10-25 有起止且止于周日 → G5 区间有界
+17,COR-020,季星辰,NEEDS_CLARIFICATION,NOOP,UNCERTAIN_RESCHEDULE,yes,no,allow,source.text「活动可能改期，还没定」，candidate 定为下周四 → G5/G6 未定改期不能定案
+18,TEN-018,季星辰,REJECT,NOOP,CROSS_TENANT_READ,yes,yes,reject,requester=elder_b，target M-TEN-018 owner=elder_a，claimed_owner_id=elder_b → G1 跨租户读取
+19,COR-016,季星辰,REJECT,NOOP,ONE_OFF_AS_HABIT,yes,no,allow,source.text「今天六点半才起」→ claim「每天六点半起床」REVISE v1 → G5 一次写成习惯（G6 亦非明确更正）
+20,NEG-011,季星辰,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,source.text「我不吃辣，一点辣都不行」→ claim「本人爱吃辣」→ G4 否定反转
+21,DEL-009,季星辰,APPROVE,READ,OWNER_MATCH,yes,yes,allow,target M-DEL-009-OTHER 不在 deleted_memory_ids，requester=owner=elder_a → G2 未命中删除抑制，G1 本人读本人
+22,PERSON-015,季星辰,REJECT,NOOP,QUOTED_OTHER_AS_SELF,no,yes,allow,source.text「小林说她周末回来」→ candidate subj=self claim「本人周末回来」→ G3 转述他人写成本人
+23,NEG-020,季星辰,REJECT,NOOP,NEGATION_SCOPE_SHIFT,yes,yes,allow,source.text「不吃海鲜，不过鱼可以」→ claim「不吃鱼」→ G4 否定作用域从海鲜移到鱼（例外丢失）
+24,COR-013,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,source.text「今天不想吃甜的」→ claim「不爱吃甜食」valid_to=None REVISE v1 → G5 当天状态扩成永久
+25,SENS-003,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「老起夜，别告诉小林」；claim 保留自述，scope=private，valid_to=11-07 → G7 私人有限期健康自述
+26,CTRL-004,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我养了三条金鱼」与 claim 一致，数量保留，owner=speaker=subject → G3/G4 无违规
+27,PERSON-017,季星辰,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,source.text「邻居老李说他家的猫生了三只」→ candidate subj=self → G3 邻居事实写成本人
+28,SENS-020,季星辰,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,source.text「记性差，可能老年痴呆」→ claim「患阿尔茨海默病」→ G4 诊断推断且抹掉不确定性
+29,SENS-006,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「有点便秘，别告诉别人」；claim 保留自述，scope=private，valid_to=11-08 → G7 私人有限期健康自述
+30,NEG-015,季星辰,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,source.text「我没有请保姆」→ claim「请了保姆照顾起居」→ G4 否定反转
+31,TIME-013,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,reject,source.text「昨天没睡好，今天有点困」→ claim「长期睡眠不好」valid_to=None → G5 一天状态扩成长期（health/sensitive_review）
+32,TEN-014,季星辰,REJECT,NOOP,FAMILY_WRITE_DENIED,yes,yes,reject,requester=family_lin purpose=memory_write，source.owner=elder_a，scope=private → G1 亲属写本人私人记忆
+33,TEN-017,季星辰,REJECT,NOOP,FAMILY_PRIVATE_READ_DENIED,yes,yes,reject,read_request.scope=private_memory，requester=family_lin，grant_active=false → G1 家属读私人记忆无授权
+34,DEL-014,季星辰,REJECT,NOOP,DERIVED_CONTENT_RECOVERY,yes,yes,allow,event_type=derived_rebuild 无新来源，claim 复刻 DELETED M-DEL-014 且命中 deleted_memory_ids → G2 派生重建复生
+35,NEG-007,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「从来没去过海南」→ claim「从未去过海南」否定与量词保留 → G4 语义保真
+36,TIME-001,季星辰,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,source.text「今天不想出门」；valid 10-23 00:00→23:59，prec=day，transient_state → G5 当天有界
+37,COR-008,季星辰,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,source.text「数错了，是三条，不是两条」；existing v1 目标版本匹配 → G6 明确更正
+38,PERSON-009,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我孙女喜欢画画」；subj=family_member/granddaughter_yu 与指代一致 → G3 关系人物事实绑定本人以外主体
+39,TIME-012,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,source.text「这周…周日回自己家」→ claim「长期住女儿家」valid_to=None → G5 有界状态扩成永久
+40,SENS-009,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「脚有点肿，先别告诉小林，过几天看看」；scope=private，valid_to=11-02 → G7 私人有限期健康自述
+41,TEN-010,季星辰,APPROVE,READ,OWNER_MATCH,yes,yes,allow,target M-TEN-010-OTHER 不在 deleted_memory_ids，requester=claimed_owner=elder_a → G1 本人读本人
+42,SENS-001,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「手头紧，这事别告诉孩子」；scope=financial/private，valid 至 11-23，limited_personal_note → G7 私人有限期财务
+43,COR-005,季星辰,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,source.text「上次说错了，还是小颗粒，不是薄片」；existing v2 与 expected_version=2 匹配 → G6 明确更正
+44,NEG-009,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「不喜欢小林给我买太贵的东西」→ claim 否定与作用域（太贵）保留 → G4 语义保真
+45,TIME-017,季星辰,REJECT,NOOP,QUANTIFIER_EXPANDED,yes,no,reject,source.text「现在腿脚比去年好一些」→ claim「一直很好」抹掉比较锚点并扩大到全部时间 → G4 量词扩大（health）
+46,PERSON-020,季星辰,REJECT,NOOP,QUOTED_OTHER_AS_SELF,no,yes,allow,source.text「我孙女喜欢画画」→ candidate subj=self claim「本人喜欢画画」→ G3 关系人物偏好写成本人
+47,CTRL-006,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我爱吃清蒸鱼」与 claim 一致，owner=speaker=subject=elder_a → G3/G4 无违规
+48,DEL-001,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-DEL-NEW-001 不在 suppressed[T-DEL-OLD-001]，「又开始养鱼，这次两条」新文本 → G2 新独立来源
+49,DEL-017,季星辰,REJECT,NOOP,DELETED_SOURCE_REPLAY,yes,yes,allow,source.turn=T-DEL-OLD-017 命中 suppressed_source_turn_ids → G2 删除来源重放
+50,TEN-001,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,source.owner=speaker=subject=requester=elder_a，family_binding_inactive → G1 一致
+51,DEL-008,季星辰,APPROVE,ADD,EXPLICIT_REAUTHORIZATION,yes,yes,allow,source.text「想重新开始记养鱼这件事」，turn=T-DEL-NEW-008，assert=user_confirmed → G2 本人明确重新授权
+52,SENS-017,季星辰,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,reject,source.text「我邻居胃痛」→ candidate subj=self claim「本人胃痛」→ G3 邻居健康写成本人（health）
+53,COR-017,季星辰,NEEDS_CLARIFICATION,NOOP,REPORTED_ABOUT_SELF_NEEDS_CONFIRMATION,unclear,yes,allow,source.text「小林说我现在能吃一点辣了」，candidate assert=self_report REVISE v1 → G3 关于本人的转述需本人确认
+54,DEL-010,季星辰,APPROVE,READ,OWNER_MATCH,yes,yes,allow,target M-DEL-010-NEW 不在 deleted_memory_ids（已删为 M-DEL-010），requester=owner=elder_a → G2/G1 本人读新记忆
+55,DEL-016,季星辰,REJECT,NOOP,DELETED_TARGET,yes,yes,allow,source.turn=T-DEL-NEW-016 是新来源，但 op=REVISE 目标 M-DEL-016 status=DELETED 且在 deleted_memory_ids → G2 对已删除目标修订
+56,SENS-004,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「记性不如以前，先别跟孩子说」；claim 保留自述，scope=private，valid_to=11-08 → G7 私人有限期健康自述
+57,DEL-011,季星辰,REJECT,NOOP,DELETED_SOURCE_REPLAY,yes,yes,allow,event_type=retry，source.turn=T-DEL-OLD-011 命中 suppressed_source_turn_ids → G2 旧任务重放
+58,DEL-012,季星辰,REJECT,NOOP,DELETED_SOURCE_REVISION,yes,yes,allow,event_type=retry，source.rev=2 且 turn=T-DEL-OLD-012 命中 suppressed → G2 旧转写修订写回
+59,DEL-013,季星辰,REJECT,NOOP,RESTORE_RESURRECTION,yes,yes,allow,event_type=restore 无新来源，claim 复刻 DELETED M-DEL-013 且命中 deleted_memory_ids → G2 备份恢复复生
+60,NEG-005,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「没有请保姆，平时自己做饭」与 claim 逐字一致，否定保留 → G4 语义保真
+61,TIME-011,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,source.text「今天不想出门」→ claim「长期不爱出门」valid_to=None → G5 当天状态扩成永久
+62,NEG-002,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「不喜欢太吵的地方」→ claim 否定与作用域保留且被 claim 完整支持 → G4 语义保真
+63,PERSON-013,季星辰,REJECT,NOOP,QUOTED_OTHER_AS_SELF,no,yes,allow,source.text「我老伴喜欢听评剧」→ candidate subj=self claim「本人喜欢听评剧」→ G3 老伴偏好写成本人
+64,DEL-007,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-DEL-NEW-007 不在 suppressed[T-DEL-OLD-007]，新内容「换了个鱼缸」非旧文本 → G2 新独立来源
+65,TEN-009,季星辰,APPROVE,READ,OWNER_MATCH,yes,yes,allow,requester=claimed_owner=elder_a，targets M-TEN-009-A/B 均 owner=elder_a → G1 本人读本人记忆
+66,CTRL-014,季星辰,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,source.text「每周六通常换水」→ claim「通常每周六换水」rec=weekly 无提醒副作用 → G5/G8 周期保留不建计划
+67,NEG-001,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「我不吃辣」→ claim「本人不吃辣」否定与作用域一致 → G4 语义保真
+68,SENS-016,季星辰,REJECT,NOOP,RISK_INFERENCE,yes,yes,reject,source.text「我头晕」→ claim「有跌倒高风险」→ G4 风险推断（health）
+69,CTRL-011,季星辰,REJECT,NOOP,RECENT_AS_PERMANENT,yes,no,reject,source.text「我最近有点累」→ claim「长期疲劳」valid_to=None，retention=sensitive_review → G5 最近状态永久化
+70,PERSON-002,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「邻居王阿姨每天早上打太极」；subj=other_person/neighbor_wang 与 claim 一致 → G3 绑定邻居
+71,DEL-015,季星辰,REJECT,NOOP,FAMILY_WRITE_DENIED,no,yes,allow,requester=speaker=family_lin，source.owner=elder_a，scope=family_projection 且 claim 复刻已删除 M-DEL-015 → G1 亲属写本人记忆（G2 亦命中 DELETED_MEMORY_SHARE）
+72,TEN-016,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,source.owner=speaker=subject=requester=elder_a，scope=private，binding 未激活 → G1 一致
+73,COR-018,季星辰,NEEDS_CLARIFICATION,NOOP,REPORTED_ABOUT_SELF_NEEDS_CONFIRMATION,unclear,yes,allow,source.text「邻居说我家鱼好像多了一条」，candidate assert=self_report 定为三条 REVISE v1 → G3 关于本人的转述需确认（且来源带「好像」）
+74,DEL-006,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-DEL-NEW-006 不在 suppressed[T-DEL-OLD-006]，新内容「去花市买两条鱼」→ G2 新独立来源
+75,NEG-016,季星辰,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,source.text「不爱吃甜的，但水果可以」→ claim「完全不吃甜食，也不吃水果」→ G4 例外被反转（并强化否定）
+76,PERSON-004,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我孙子小宇上小学二年级」；subj=family_member/grandson_yu，valid_from=学年起点 → G3 绑定孙子
+77,TIME-019,季星辰,REJECT,NOOP,TIME_ANCHOR_WRONG,yes,no,allow,source.text「去年开始学用智能手机」→ claim「从小就会」prec=life_stage → G5 时间锚点被改成人生阶段
+78,DEL-020,季星辰,REJECT,NOOP,FAMILY_PRIVATE_READ_DENIED,yes,yes,reject,requester=family_lin，scope=private_memory，grant_active=true 仍不授予私人读取；target M-DEL-020 status=DELETED → G1 家属读私人记忆（G2 亦命中）
+79,CTRL-005,季星辰,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,source.text「每周六通常换水，偶尔改到周日」与 claim 一致，rec=weekly，label 保留 → G5 周期与例外保留
+80,TIME-003,季星辰,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,private_limited,source.text「昨天没睡好」→ claim 锚定 2026-10-22 晚间，valid 20:00→次日08:00 有界，limited_health_note → G5 区间有界
+81,SENS-018,季星辰,REJECT,NOOP,SHARE_WITHOUT_GRANT,yes,yes,reject,source.text「别告诉孩子」→ candidate scope=family_projection claim「可分享给女儿」→ G7 未经授权生成分享投影（health）
+82,TIME-015,季星辰,REJECT,NOOP,PAST_AS_CURRENT,yes,no,allow,source.text「我年轻时在纺织厂上班」→ claim「现在在纺织厂上班」valid_from=now → G5 过去写成现在
+83,TIME-018,季星辰,REJECT,NOOP,ONE_OFF_AS_RECURRING,yes,no,allow,source.text「下周三下午去社区活动」→ claim「每周三下午都去」rec=weekly → G5 一次写成周期
+84,NEG-003,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「我女儿小林不吃辣」→ claim「女儿小林不吃辣」否定绑定女儿未移到本人 → G3/G4 保真
+85,TIME-016,季星辰,APPROVE,ADD,SIDE_EFFECT_BLOCKED,yes,yes,allow,source.text「每年冬天去海南住两个月」记忆独立成立，claim 附带「每年10月提醒订票」→ G8 只允许记忆部分，不生成提醒
+86,TIME-005,季星辰,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,allow,source.text「我年轻时在纺织厂上班」→ claim 保留人生阶段，prec=life_stage，label=年轻时 → G5 锚点保留
+87,CTRL-003,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我女儿小林在银行上班」；subj=family_member/daughter_lin 与指代一致 → G3 关系人物事实绑定本人以外主体
+88,NEG-012,季星辰,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,source.text「我不喜欢太吵的地方」→ claim「本人喜欢热闹」→ G4 否定反转
+89,TEN-008,季星辰,APPROVE,READ,OWNER_MATCH,yes,yes,allow,requester=claimed_owner=elder_a 读本人 M-TEN-008，scope=owner_memory → G1 本人读本人
+90,DEL-005,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-DEL-NEW-005 不在 suppressed[T-DEL-OLD-005]，「不是我养」主体绑女儿 → G2 新独立来源
+91,PERSON-010,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我儿子说他周末加班」；subj=family_member/son，reported_other，valid 10-31→11-01 覆盖本周末 → G3 绑定儿子
+92,TIME-007,季星辰,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,private_limited,source.text「现在腿脚比去年好一些」→ claim 保留现在/去年对比，valid 至 11-06，limited_health_note → G5 锚点保留＋有限期
+93,NEG-017,季星辰,REJECT,NOOP,NEGATION_INVERTED,yes,yes,allow,source.text「从来没去过海南」→ claim「去过海南」→ G4 否定反转
+94,SENS-015,季星辰,REJECT,NOOP,DIAGNOSIS_INFERENCE,yes,yes,reject,source.text「我最近瘦了」→ claim「可能得了重病」→ G4 疾病推断（health）
+95,NEG-010,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「不吃海鲜，不过鱼可以」→ claim「不吃海鲜，鱼除外」否定与例外均保留 → G4 语义保真
+96,TIME-020,季星辰,REJECT,NOOP,RECENT_AS_PERMANENT,yes,no,reject,source.text「最近有点累，睡得多一些」→ claim「长期疲劳」valid_to=None，retention=sensitive_review → G5 最近状态永久化
+97,CTRL-007,季星辰,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,source.text「下周三下午去社区活动」→ claim 保留一次，valid 10-28 14:00→17:00 有界，rec=None → G5 一次且区间有界
+98,NEG-018,季星辰,REJECT,NOOP,NEGATION_STRENGTHENED,yes,yes,allow,source.text「我不太会用手机，只会接电话」→ claim「完全不会用手机」→ G4 否定被强化
+99,SENS-019,季星辰,DEFER,NOOP,SENSITIVE_REQUIRES_CONFIRMATION,yes,no,clarify,source.text「晚上起夜多」无期限，claim 加「长期」且 retention=default_background、valid_to=None → G7 敏感健康自动长期化缺本人确认
+100,PERSON-008,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我儿子在深圳工作」；subj=family_member/son 与指代一致 → G3 关系人物事实绑定本人以外主体
+101,TEN-007,季星辰,APPROVE,READ,OWNER_MATCH,yes,yes,allow,requester=claimed_owner=elder_a 读本人 M-TEN-007，scope=owner_memory → G1 本人读本人
+102,TIME-008,季星辰,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,source.text「下周三下午去社区活动」→ claim 保留一次，valid 10-28 14:00→17:00 有界，rec=None → G5 一次且区间有界
+103,TEN-019,季星辰,REJECT,NOOP,CROSS_TENANT_READ,yes,yes,reject,requester=elder_b，target M-TEN-019 owner=elder_a，claimed_owner_id=elder_a → G1 跨租户读取
+104,TEN-004,季星辰,APPROVE,ADD,NEW_SOURCE_AFTER_DELETE,yes,yes,allow,source.turn=T-TEN-004 不在 suppressed[T-TEN-004-OLD]，owner=speaker=requester=elder_a → G1 一致＋G2 新独立陈述非黑名单
+105,PERSON-003,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我老伴喜欢听评剧」；subj=family_member/spouse 与指代一致 → G3 绑定老伴
+106,PERSON-007,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「邻居老李说他家的猫生了三只」；subj=other_person/neighbor_li，reported_other → G3 绑定邻居
+107,TIME-009,季星辰,APPROVE,ADD,TIME_SCOPE_PRESERVED,yes,yes,allow,source.text「去年开始学用智能手机」→ claim「2025 年开始」按来源时区解析，prec=year → G5 过去锚点保留
+108,COR-001,季星辰,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,source.text「不是小颗粒了，现在换薄片鱼粮了」；existing v1 与 expected_version=1 匹配 → G6 明确更正
+109,PERSON-001,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我女儿小林不吃辣」；subj=family_member/daughter_lin，否定绑定女儿 → G3 绑定女儿
+110,PERSON-012,季星辰,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,reject,source.text「邻居王阿姨最近胃痛」→ candidate subj=self claim「本人最近胃痛」→ G3 邻居健康写成本人（health）
+111,DEL-019,季星辰,REJECT,NOOP,DELETED_MEMORY_RECALL,yes,yes,allow,requester=owner=elder_a，但 target M-DEL-019 status=DELETED 且在 deleted_memory_ids → G2 已删除记忆召回归零
+112,COR-012,季星辰,REJECT,NOOP,ONE_OFF_AS_RECURRING,yes,no,allow,source.text「这周六不换了，改周日换」→ claim「以后每周日换水」rec=weekly REVISE v1 → G5 一次调整写成周期（G6 亦非明确更正）
+113,COR-003,季星辰,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,source.text「以后改成周日换水了，周六不换了」；未说旧说法错但明确换掉，rec=weekly → G6 明确改变
+114,COR-010,季星辰,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,source.text「不是二年级，是三年级了」；subj=family_member/granddaughter_yu 与 existing 一致，exp_ver=1 匹配 → G3/G6 明确更正
+115,PERSON-016,季星辰,REJECT,NOOP,DIAGNOSIS_INFERENCE,no,yes,reject,source.text「医生说我血压有点高」→ claim「本人确诊高血压」丢转述归属并下诊断 → G3/G4 硬拒绝优先（诊断推断，health）
+116,TIME-010,季星辰,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,source.text「每周六通常换水，偶尔改到周日」与 claim 一致，rec=weekly，label 保留 → G5 周期与例外保留
+117,TEN-011,季星辰,REJECT,NOOP,CROSS_TENANT_WRITE,yes,yes,allow,source.owner=elder_a，requester=elder_b purpose=memory_write → G1 跨租户写入
+118,CTRL-015,季星辰,APPROVE,NOOP,LOW_VALUE_TRANSIENT,yes,yes,allow,source.text「刚才把杯子放到桌上了」，valid 仅 09:58→10:00 → G6 低价值瞬时信息不新增长期记忆
+119,COR-007,季星辰,APPROVE,REVISE,EXPLICIT_CORRECTION,yes,yes,allow,source.text「不是下周三，是下周四去社区活动」；existing v1 匹配，valid 10-29 为周四 → G6 明确更正
+120,TIME-004,季星辰,APPROVE,ADD,TIME_SCOPE_BOUNDED,yes,yes,allow,source.text「上个月整理成两本相册」→ claim 锚定 2026 年 9 月，valid 09-01→09-30 有界 → G5 过去区间有界
+121,TEN-013,季星辰,REJECT,NOOP,TARGET_OWNER_MISMATCH,no,yes,allow,source.owner=requester=elder_a，REVISE 目标 M-TEN-013-B owner=elder_b、subj=elder_b → G1 目标记忆归属他租户
+122,TIME-006,季星辰,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,source.text「每年冬天去海南住两个月」与 claim 一致，rec=yearly，label=每年冬天，无提醒副作用 → G5/G8 周期保留
+123,CTRL-001,季星辰,APPROVE,ADD,RECURRENCE_PRESERVED,yes,yes,allow,source.text「每天早上六点起来遛弯」与 claim 一致，rec=daily 未生成提醒 → G5 周期保留不建计划
+124,DEL-004,季星辰,APPROVE,ADD,EXPLICIT_REAUTHORIZATION,yes,yes,allow,source.text「上次删掉的养鱼那件事，可以重新记一下」，turn=T-DEL-NEW-004，assert=user_confirmed → G2 明确重新授权
+125,PERSON-014,季星辰,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,source.text「我孙子小宇上小学二年级」→ candidate subj=self claim「本人上小学二年级」→ G3 孙子身份写成本人
+126,PERSON-011,季星辰,REJECT,NOOP,QUOTED_OTHER_AS_SELF,no,yes,allow,source.text「我女儿小林不吃辣」→ candidate subj=self claim「本人不吃辣」→ G3 女儿偏好写成本人
+127,NEG-008,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「我不太会用手机，只会接电话」与 claim 逐字一致，否定强度未变 → G4 语义保真
+128,PERSON-019,季星辰,REJECT,NOOP,THIRD_PARTY_AS_SELF,no,yes,allow,source.text「我儿子在深圳工作」→ candidate subj=self claim「本人在深圳工作」→ G3 儿子身份写成本人
+129,COR-014,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,source.text「小林今天请假了」→ claim「不在银行上班了」valid_to=None REVISE v1 → G5 今天状态写成永久（G6 亦非明确更正）
+130,COR-011,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,source.text「今天想喝点红茶」→ claim「不喜欢绿茶，改喝红茶」REVISE v1 valid_to=None → G5 一次选择写成永久偏好（G6 亦非明确更正）
+131,NEG-006,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「不爱吃甜的，但水果可以」→ claim「不爱吃甜食，水果除外」否定与例外均保留 → G4 语义保真
+132,TEN-006,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,source.owner=speaker=subject=requester=elder_a，scope=private → G1 一致
+133,SENS-005,季星辰,APPROVE,ADD,SENSITIVE_LIMITED_RETENTION,yes,yes,private_limited,source.text「别记太长，过两周再说」；scope=private，valid 10-25→11-08 恰两周 → G7 本人限定的有限期私人健康记录
+134,CTRL-008,季星辰,APPROVE,NOOP,DUPLICATE_NOOP,yes,yes,allow,existing M-CTRL-008 v1 claim 与 valid 与候选完全一致（同主体同时间）→ G6 等价重复，追加证据不新增
+135,DEL-018,季星辰,REJECT,NOOP,DELETED_SOURCE_REVISION,yes,yes,allow,event_type=retry，source.rev=2 且 turn=T-DEL-OLD-018 命中 suppressed → G2 旧转写修订写回
+136,NEG-004,季星辰,APPROVE,ADD,NEGATION_PRESERVED,yes,yes,allow,source.text「不是每天都遛弯，下雨就不去」→ claim 否定量词与条件均保留 → G4 语义保真
+137,COR-019,季星辰,REJECT,NOOP,TIME_SCOPE_EXPANDED,yes,no,allow,source.text「今天红茶卖完了，只能喝绿茶」→ claim「改回喝绿茶」REVISE v1 valid_to=None → G5 一次性情境写成永久偏好（G6 亦属情境当更正）
+138,CTRL-002,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我喜欢听评剧」与 claim 一致，owner=speaker=subject=elder_a → G3/G4 无违规
+139,CTRL-010,季星辰,APPROVE,NOOP,NO_MEMORY_INTENT,yes,yes,allow,event_type=no_memory，source.text「今天阳光真好」纯闲聊无候选 → G6 允许无记忆结果
+140,TEN-005,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,existing M-TEN-005-B 属 elder_b 不可作目标；候选 op=ADD 写本人 → G1 一致且未跨租户合并
+141,NEG-019,季星辰,REJECT,NOOP,NEGATION_SCOPE_SHIFT,yes,yes,allow,source.text「不喜欢小林给我买太贵的东西」→ claim「不喜欢女儿小林」→ G4 否定作用域移到人物
+142,COR-002,季星辰,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,source.text「小林换工作了，现在在社区医院做行政」；subj=daughter_lin，exp_ver=1 匹配 → G6 明确改变
+143,SENS-013,季星辰,REJECT,NOOP,MEDICATION_INFERENCE,no,no,reject,source.text「医生说我这药可以加半片」→ claim「本人应每天加半片药」失据成用药指令 → G4/G7 用药推断硬拒绝（health）
+144,PERSON-006,季星辰,APPROVE,ADD,SUBJECT_BOUND,yes,yes,allow,source.text「我老伴的妹妹住在广州」；subj=other_person/spouse_sister 与指代一致 → G3 绑定老伴妹妹
+145,NEG-014,季星辰,REJECT,NOOP,NEGATION_LOST,yes,no,allow,source.text「不是每天都遛弯，下雨就不去」→ claim「本人每天遛弯」丢否定与条件 → G4 否定丢失（频率被扩大）
+146,COR-009,季星辰,APPROVE,REVISE,EXPLICIT_CHANGE,yes,yes,allow,source.text「最近改喝红茶了，绿茶不喝了」；明确换掉非说旧说法错，exp_ver=1 匹配 → G6 明确改变
+147,NEG-013,季星辰,REJECT,NOOP,QUOTED_OTHER_AS_SELF,no,yes,allow,source.text「我女儿小林不吃辣」→ candidate subj=self claim「本人不吃辣」→ G3 女儿偏好写成本人
+148,TIME-014,季星辰,REJECT,NOOP,ONE_OFF_AS_HABIT,yes,no,allow,source.text「上个月把阳台花盆打翻了」一次事件 → claim「经常打翻花盆」rec=often → G5 一次写成习惯
+149,CTRL-009,季星辰,APPROVE,NOOP,DUPLICATE_NOOP,yes,yes,allow,existing M-CTRL-009 v1 claim「养了两条金鱼」与 valid 2026-10-01→None 同候选完全一致 → G6 等价重复，追加「还在」证据
+150,TEN-002,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,private_limited,source.text「手头紧，别告诉孩子」；owner=speaker=subject=requester=elder_a，scope=private 不因 binding 改所有权 → G1 一致（限私人有限期）
+151,SENS-010,季星辰,APPROVE,ADD,SENSITIVE_PRIVATE_ALLOWED,yes,yes,private_limited,source.text「记性差，这话只留在我这里」；scope=private，valid 至 11-10，limited_health_note → G7 本人明确要求私人有限期
+152,SENS-007,季星辰,APPROVE,ADD,SENSITIVE_PRIVATE_ALLOWED,yes,yes,private_limited,source.text「昨天头晕了一下，现在好了，记着就行」→ claim 锚定 10-22 一次已缓解，valid 至 10-25 → G5/G7 明确记录＋有限期私人健康
+153,TEN-003,季星辰,APPROVE,ADD,OWNER_MATCH,yes,yes,allow,source.owner=speaker=requester=elder_a，subj=daughter_lin 绑定正确，scope=private，binding_active 不改所有权 → G1 一致
+154,PERSON-018,季星辰,NEEDS_CLARIFICATION,NOOP,REPORTED_ABOUT_SELF_NEEDS_CONFIRMATION,unclear,yes,allow,source.text「我女儿说我不吃辣」，candidate assert=self_report 未标 reported_other → G3 关于本人的转述需本人确认
